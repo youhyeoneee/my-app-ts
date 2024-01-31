@@ -68,6 +68,19 @@ export default function TodoList() {
         [todoList]
     );
 
+    const updateTodo = useCallback(
+        (id: number, newValue: string) => {
+            console.log(`${id} 수정`);
+            setTodoList((prev) => {
+                return prev.map((todo) =>
+                    todo.id === id ? { ...todo, text: newValue } : todo
+                );
+            });
+            console.log(todoList);
+        },
+        [todoList]
+    );
+
     const onChange = (e: { target: { value: string } }) => {
         console.log(`test : ${inputs.text}, ${inputs.color} `);
         setInputs({
@@ -101,7 +114,11 @@ export default function TodoList() {
             <h3> Todo Items</h3>
             <div className="todoItemsContainer">
                 {todoList.map((elem) => (
-                    <TodoItem todoItem={elem} onDelete={deleteTodo} />
+                    <TodoItem
+                        todoItem={elem}
+                        onDelete={deleteTodo}
+                        onUpdate={updateTodo}
+                    />
                 ))}
             </div>
         </div>
