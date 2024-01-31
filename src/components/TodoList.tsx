@@ -57,6 +57,17 @@ export default function TodoList() {
         nextId.current += 1;
     }, [inputs]);
 
+    const deleteTodo = useCallback(
+        (id: number) => {
+            setTodoList((prev) => {
+                return prev.filter((todo) => {
+                    return todo.id !== id;
+                });
+            });
+        },
+        [todoList]
+    );
+
     const onChange = (e: { target: { value: string } }) => {
         console.log(`test : ${inputs.text}, ${inputs.color} `);
         setInputs({
@@ -90,7 +101,7 @@ export default function TodoList() {
             <h3> Todo Items</h3>
             <div className="todoItemsContainer">
                 {todoList.map((elem) => (
-                    <TodoItem todoItem={elem} />
+                    <TodoItem todoItem={elem} onDelete={deleteTodo} />
                 ))}
             </div>
         </div>

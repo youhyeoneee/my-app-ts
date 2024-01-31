@@ -6,9 +6,10 @@ import Form from "react-bootstrap/Form";
 
 type Prop = {
     todoItem: ITodoItem;
+    onDelete: Function;
 };
 
-export default function TodoItem({ todoItem }: Prop) {
+export default function TodoItem({ todoItem, onDelete }: Prop) {
     const [todo, setTodo] = useState<ITodoItem>();
     const { id, text, color }: ITodoItem = todoItem;
 
@@ -23,7 +24,11 @@ export default function TodoItem({ todoItem }: Prop) {
                     value={text}
                     style={{ backgroundColor: todoItem.color }}
                 ></Form.Control>
-                <Button variant="danger" id="button-addon2">
+                <Button
+                    variant="danger"
+                    id="button-addon2"
+                    onClick={() => onDelete(id)}
+                >
                     삭제
                 </Button>
             </InputGroup>
