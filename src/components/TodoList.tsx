@@ -44,9 +44,8 @@ export default function TodoList() {
 
     const addTodo = useCallback(() => {
         const newTodo: ITodoItem = {
+            ...inputs,
             id: nextId.current,
-            text: text,
-            color: color,
         };
         setTodoList((prev: ITodoItem[]) => prev.concat(newTodo));
         focusInput(); // 입력란으로 초점
@@ -82,9 +81,8 @@ export default function TodoList() {
     );
 
     const onChange = (e: { target: { value: string } }) => {
-        console.log(`test : ${inputs.text}, ${inputs.color} `);
         setInputs({
-            color: color,
+            ...inputs,
             text: e.target.value,
         });
     };
@@ -109,7 +107,7 @@ export default function TodoList() {
                         style={{ backgroundColor: color }}
                         type="text"
                         placeholder="입력"
-                        value={inputs.text}
+                        value={text}
                         onChange={onChange}
                     />
                     <Button
