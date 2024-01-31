@@ -89,6 +89,16 @@ export default function TodoList() {
         });
     };
 
+    const changeColor = useCallback(
+        (newColor: string) => {
+            setInputs({
+                ...inputs,
+                color: newColor,
+            });
+        },
+        [inputs]
+    );
+
     return (
         <div className="todoListContainer">
             <h1>Todo App</h1>
@@ -96,7 +106,7 @@ export default function TodoList() {
                 <InputGroup className="mb-3">
                     <Form.Control
                         ref={inputRef}
-                        style={{ backgroundColor: inputs.color }}
+                        style={{ backgroundColor: color }}
                         type="text"
                         placeholder="입력"
                         value={inputs.text}
@@ -110,6 +120,11 @@ export default function TodoList() {
                         입력
                     </Button>
                 </InputGroup>
+            </div>
+            <div className="colorContainer">
+                {colorList.map((elem) => (
+                    <ColorButton color={elem} changeColor={changeColor} />
+                ))}
             </div>
             <h3> Todo Items</h3>
             <div className="todoItemsContainer">
