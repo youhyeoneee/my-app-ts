@@ -5,17 +5,16 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-interface IInput {
+type IInput = {
     text: string;
-    color: string;
-}
+    color?: string;
+};
 
 export interface ITodoItem extends IInput {
     id: number;
 }
 
 export default function TodoList() {
-    const [inputs, setInputs] = useState<IInput>();
     const [colorList, setColorList] = useState<string[]>([
         "white",
         "yellow",
@@ -23,8 +22,14 @@ export default function TodoList() {
         "pink",
     ]);
 
-    const inputRef = useRef() as React.MutableRefObject<HTMLDivElement>;
-    const nextId = useRef(1) as React.MutableRefObject<number>;
+    const [inputs, setInputs] = useState<IInput>({
+        text: "",
+        color: colorList[0],
+    });
+
+    const { text, color } = inputs;
+    const inputRef = useRef<HTMLInputElement>(null);
+    const nextId = useRef<number>(5);
 
     const [todoList, setTodoList] = useState<ITodoItem[]>([
         { id: 1, text: "first", color: "white" },
@@ -33,10 +38,55 @@ export default function TodoList() {
         { id: 4, text: "fourth", color: "yellow" },
     ]); // TO DO LIST
 
+    const focusInput = () => {
+        inputRef.current?.focus();
+    };
+
+    const addTodo = useCallback(() => {
+        const newTodo: ITodoItem = {
+            id: nextId.current,
+            text: text,
+            color: color,
+        };
+        setTodoList((prev: ITodoItem[]) => prev.concat(newTodo));
+        focusInput(); // 입력란으로 초점
+        setInputs({
+            text: "",
+            color: color,
+        });
+        nextId.current += 1;
+    }, [inputs]);
+
+    const onChange = (e: { target: { value: string } }) => {
+        console.log(`test : ${inputs.text}, ${inputs.color} `);
+        setInputs({
+            color: color,
+            text: e.target.value,
+        });
+    };
+
     return (
         <div className="todoListContainer">
             <h1>Todo App</h1>
-
+            <div>
+                <InputGroup className="mb-3">
+                    <Form.Control
+                        ref={inputRef}
+                        style={{ backgroundColor: inputs.color }}
+                        type="text"
+                        placeholder="입력"
+                        value={inputs.text}
+                        onChange={onChange}
+                    />
+                    <Button
+                        variant="secondary"
+                        id="button-addon2"
+                        onClick={addTodo}
+                    >
+                        입력
+                    </Button>
+                </InputGroup>
+            </div>
             <h3> Todo Items</h3>
             <div className="todoItemsContainer">
                 {todoList.map((elem) => (
@@ -45,4 +95,7 @@ export default function TodoList() {
             </div>
         </div>
     );
+}
+function focusInput() {
+    throw new Error("Function not implemented.");
 }
