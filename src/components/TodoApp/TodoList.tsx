@@ -31,12 +31,7 @@ export default function TodoList() {
     const inputRef = useRef<HTMLInputElement>(null);
     const nextId = useRef<number>(5);
 
-    const [todoList, setTodoList] = useState<ITodoItem[]>([
-        { id: 1, text: "first", color: "white" },
-        { id: 2, text: "second", color: "pink" },
-        { id: 3, text: "third", color: "red" },
-        { id: 4, text: "fourth", color: "yellow" },
-    ]); // TO DO LIST
+    const [todoList, setTodoList] = useState<ITodoItem[]>([]); // TO DO LIST
 
     const focusInput = () => {
         inputRef.current?.focus();
